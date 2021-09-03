@@ -1,0 +1,29 @@
+{
+  "interface-theme-brightness": "system",
+  "hotkey": "<ctrl>+<alt>+=",
+  "fonts": {
+    "Default": "fonts\\Roboto\\Roboto-Regular.ttf",
+
+    "Roboto": "fonts\\Roboto\\Roboto-Regular.ttf",
+    "Roboto Thin": "fonts\\Roboto\\Roboto-Thin.ttf",
+    "Monospace": "fonts\\Roboto\\Roboto-Mono.ttf",
+    "Tangerine": "fonts\\Tangerine\\Tangerine-Regular.ttf",
+    "Major Mono": "fonts\\Major_Mono_Display\\MajorMonoDisplay-Regular.ttf",
+
+    "__comment": "Default font should be one of the other fonts, as the option will disappear after opening the dropdown."
+  },
+
+  "interface_config": {
+    "font_size_range": {
+      "min": 30,
+      "max": 200
+    },
+    "texts": {
+      "title": "Text Auto Draw",
+      "info_1": "Feather position = Draw start position",
+      "info_2": "Select font and -size",
+      "start_button": "Start drawing \ud83c\udfa8",
+      "__comment": "To use emojis here, run print(json.dumps('<emoji>')) and paste the output."
+    }
+  }
+}
