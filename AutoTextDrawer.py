@@ -163,7 +163,6 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
 
     # Import theme
     theme_name = interface_config['interface_theme']
-    print(interface_config['interface_theme_paths'])
     root.tk.call("source", interface_config['interface_theme_paths'][theme_name])
     # Set the initial theme
 

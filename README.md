@@ -14,7 +14,7 @@ and uses [a ttk theme](https://github.com/rdbende/Azure-ttk-theme) made by [rdbe
 (The [Sun Valley theme](https://github.com/rdbende/Sun-Valley-ttk-theme) is also available and can be selected in the config.).
 
 Additional fonts can be added by placing a .ttf in the [/fonts](/fonts) directory and specifying the relative
-path in [res/config.json](config.json). Other types of configuration such as, the hotkey or interface texts can also be made using
+path in [config.json](config.json). Other types of configuration such as, the hotkey or interface texts can also be made using
 this config file.
 
 
