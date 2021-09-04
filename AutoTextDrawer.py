@@ -4,7 +4,7 @@
 This is the source code of AutoTextDrawer a application, which automatically draws text on canvases by sending
 mouse events.
 Additional fonts can be added by placing a .ttf in the /fonts directory and specifying the relative
-path in res/config.json. Other types of configuration such as, the hotkey, can also be done by using
+path in config.json. Other types of configuration such as, the hotkey, can also be done by using
 the config.json file.
 """
 __author__ = 'Simon Felix Conrad'
@@ -163,6 +163,7 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
 
     # Import theme
     theme_name = interface_config['interface_theme']
+    print(interface_config['interface_theme_paths'])
     root.tk.call("source", interface_config['interface_theme_paths'][theme_name])
     # Set the initial theme
 
@@ -343,7 +344,7 @@ def hotkey_listener():
 
 
 def get_config() -> dict:
-    with open("res\\config.json", 'r') as config:
+    with open("config.json", 'r') as config:
         config = json.loads(config.read())
 
         return config

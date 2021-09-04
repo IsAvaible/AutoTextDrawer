@@ -19,8 +19,8 @@
     "interface_theme_brightness": "system",
     "interface_theme": "azure",
     "interface_theme_paths": {
-      "azure": "res/Azure-ttk-theme/azure.tcl",
-      "sun_valley": "res/Sun-Valley-ttk-theme-master/sun-valley.tcl"
+      "azure": "themes/Azure-ttk-theme/azure.tcl",
+      "sun_valley": "themes/Sun-Valley-ttk-theme-master/sun-valley.tcl"
     },
     "accurate_draw_is_default": false,
     "font_size_range": {

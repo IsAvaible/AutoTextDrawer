@@ -1,13 +1,13 @@
-res/Azure-ttk-theme/* linguist-vendored
-res/Azure-ttk-theme/theme/dark.tcl linguist-vendored
-res/Azure-ttk-theme/theme/light.tcl linguist-vendored
-res/Azure-ttk-theme/theme/azure.tcl linguist-vendored
-res/Azure-ttk-theme/README.md linguist-vendored
-res/Azure-ttk-theme/example.py linguist-vendored
+themes/Azure-ttk-theme/* linguist-vendored
+themes/Azure-ttk-theme/theme/dark.tcl linguist-vendored
+themes/Azure-ttk-theme/theme/light.tcl linguist-vendored
+themes/Azure-ttk-theme/theme/azure.tcl linguist-vendored
+themes/Azure-ttk-theme/README.md linguist-vendored
+themes/Azure-ttk-theme/example.py linguist-vendored
 
-res/Sun-Valley-ttk-theme-master/* linguist-vendored
-res/Sun-Valley-ttk-theme-master/theme/dark.tcl linguist-vendored
-res/Sun-Valley-ttk-theme-master/theme/light.tcl linguist-vendored
-res/Sun-Valley-ttk-theme-master/theme/sun-valley.tcl linguist-vendored
-res/Sun-Valley-ttk-theme-master/README.md linguist-vendored
-res/Sun-Valley-ttk-theme-master/example.py linguist-vendored
+themes/Sun-Valley-ttk-theme-master/* linguist-vendored
+themes/Sun-Valley-ttk-theme-master/theme/dark.tcl linguist-vendored
+themes/Sun-Valley-ttk-theme-master/theme/light.tcl linguist-vendored
+themes/Sun-Valley-ttk-theme-master/theme/sun-valley.tcl linguist-vendored
+themes/Sun-Valley-ttk-theme-master/README.md linguist-vendored
+themes/Sun-Valley-ttk-theme-master/example.py linguist-vendored

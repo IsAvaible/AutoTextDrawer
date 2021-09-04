@@ -1,7 +1,7 @@
 # Copyright © 2021 rdbende <rdbende@gmail.com>
 
-source res/Azure-ttk-theme/theme/light.tcl
-source res/Azure-ttk-theme/theme/dark.tcl
+source [file join [file dirname [info script]] theme light.tcl]
+source [file join [file dirname [info script]] theme dark.tcl]
 
 option add *tearOff 0
 
