@@ -2,28 +2,52 @@
   "interface-theme-brightness": "system",
   "hotkey": "<ctrl>+<alt>+=",
   "fonts": {
-    "Default": "fonts\\Roboto\\Roboto-Regular.ttf",
+    "Default (Gloria)": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
 
     "Roboto": "fonts\\Roboto\\Roboto-Regular.ttf",
     "Roboto Thin": "fonts\\Roboto\\Roboto-Thin.ttf",
-    "Monospace": "fonts\\Roboto\\Roboto-Mono.ttf",
+    "Passion One": "fonts\\Passion_One\\\\PassionOne-Black.ttf",
     "Tangerine": "fonts\\Tangerine\\Tangerine-Regular.ttf",
+    "Gloria Hallelujah": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
     "Major Mono": "fonts\\Major_Mono_Display\\MajorMonoDisplay-Regular.ttf",
+    "Monospace": "fonts\\Roboto\\Roboto-Mono.ttf",
 
-    "__comment": "Default font should be one of the other fonts, as the option will disappear after opening the dropdown."
+
+    "__comment": "Default font should be one of the other fonts, as the option will disappear after opening the dropdown.",
+    "__comment_2": "Handwriting like fonts do work better in general (See Gloria Hallelujah)."
   },
-
   "interface_config": {
+    "accurate_draw_is_default": false,
     "font_size_range": {
-      "min": 30,
-      "max": 200
+      "min": 20,
+      "max": 200,
+      "default": 70
+    },
+    "letter_spacing_range": {
+      "min": 20,
+      "max": 1,
+      "default": 10
     },
     "texts": {
       "title": "Text Auto Draw",
       "info_1": "Feather position = Draw start position",
       "info_2": "Select font and -size",
+      "more_options_button": "Show more options",
+      "less_options_button": "Show less options",
+      "show_fonts_button": "Show fonts",
+      "accurate_draw_button": "Draw each pixels individually",
+      "accurate_draw_tooltip": "Turning on accurate draw in unoptimized applications (e.g. Snip & Sketch) may cause performance issues.",
+      "letter_spacing_info": "Letter-spacing",
       "start_button": "Start drawing \ud83c\udfa8",
-      "__comment": "To use emojis here, run print(json.dumps('<emoji>')) and paste the output."
+      "__comment": "To use emojis here, run: import json; print(json.dumps('<emoji>')); and paste the output."
+    }
+  },
+  "show_font(s)_config": {
+    "default_show_font(s)_text": "Almost before we knew it, we had left the ground.",
+    "default_font_size": 80,
+    "colors": {
+      "foreground": "black",
+      "background": "white"
     }
   }
 }

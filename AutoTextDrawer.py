@@ -25,6 +25,7 @@ from numpy import asarray  # transform image to pixel array
 from typing import Union  # type hint with multiple possible types
 from ctypes import windll  # fix dpi inconsistency between controller and listener
 from time import time  # measure draw time
+from time import sleep  # Animate interface size change
 
 
 def main():
@@ -32,10 +33,11 @@ def main():
     # font = read_font('fonts\\Roboto\\Roboto-Black.ttf', 80)
     # font = read_font('fonts\\Tangerine\\Tangerine-Regular.ttf', 100)
     # Speed comparison clicks vs hold and swipe
-    # draw_letter(font, u'<', (300, 300), True)
-    # draw_letter(font, u'>', (400, 300), False)
-    # draw_text(font, u'Hi, Sophie :)', (200, 300), letter_spacing=5)
+    # draw_letter(font, u'<', (300, 300), accurate_clicks=True)
+    # draw_letter(font, u'>', (400, 300), accurate_clicks=False)
+    # draw_text(font, u'Hi, person who is interested in the source code :)', (200, 300), letter_spacing=5)
     # interface((500, 500))
+    # show_all_fonts()
     hotkey_listener()
 
 
@@ -60,40 +62,70 @@ def get_letter(font: ImageFont.FreeTypeFont, unicode_letter: str) -> list[list[i
     return image_data
 
 
-def show_font(font: ImageFont.FreeTypeFont, unicode_text: str):
+def show_font(font: ImageFont.FreeTypeFont, unicode_text: str = None):
+    # get the config
+    config = get_config()['show_font(s)_config']
+    if unicode_text is None:
+        unicode_text = config['default_show_font(s)_text']
+    fg, bg = config['colors']['foreground'], config['colors']['background']
+
     # get the line size
     text_width, text_height = font.getsize(unicode_text)
 
     # create a blank canvas with extra space between lines
-    canvas = Image.new('RGB', (text_width + 10, text_height + 10), "green")
+    canvas = Image.new('RGB', (text_width + 10, text_height + 10), bg)
 
-    # draw the text onto the text canvas, and use black as the text color
+    # draw the text onto the text canvas
     draw = ImageDraw.Draw(canvas)
-    draw.text((5, 5), unicode_text, 'white', font)
+    draw.text((5, 5), unicode_text, fg, font)
 
-    # save the blank canvas to a file
+    # show the canvas in local image viewer
+    canvas.show()
+
+
+def show_all_fonts():
+    # get config
+    config = get_config()
+    show_fonts_config = config['show_font(s)_config']
+    text = show_fonts_config['default_show_font(s)_text']
+    font_size = show_fonts_config['default_font_size']
+    fg, bg = show_fonts_config['colors']['foreground'], show_fonts_config['colors']['background']
+    # get fonts
+    font_names = [key for key in config['fonts'].keys() if not key.startswith('__') and not key.startswith('Default')]
+    fonts = [read_font(font_path, font_size) for font_path in map(config['fonts'].get, font_names)]
+    texts = [f"{font_names[f_index]}: {text}" for f_index in range(len(fonts))]
+    # get the line size
+    font_sizes = [font.getsize(text) for font in fonts]
+    img_width, img_height = max(size[0] for size in font_sizes), sum(size[1] for size in font_sizes) + 5 * len(fonts)
+    # create a blank canvas with extra space between lines
+    canvas = Image.new('RGB', (img_width + 10, img_height + 5), bg)
+    draw = ImageDraw.Draw(canvas)
+    # draw the fonts onto the canvas
+    for f_index in range(len(fonts)):
+        draw.text((5, 5 + sum(size[1] for size in font_sizes[:f_index])), texts[f_index], fg, fonts[f_index])
+    # show the canvas in local image viewer
     canvas.show()
 
 
 def array_to_input_motion(array: list[list[int]], initial_position: tuple[int, int], accurate_clicks: bool = False):
     mouse: pynput.mouse = pynput.mouse.Controller()
     mouse.position = initial_position
-    initial_position = mouse.position
 
     for y in range(len(array)):
+        # Stores amount of consecutive pixels in a row, allowing single swipe motions to draw them
         consecutive_pixels = 0
         for x in range(len(array[y])):
             new_position = (initial_position[0] + x, initial_position[1] + y)
-            if array[y][x] == 1:
+            if array[y][x] == 1:  # Pixel is active
                 if not accurate_clicks:
                     if consecutive_pixels == 0:
                         mouse.position = new_position
                     consecutive_pixels += 1
-                else:
+                else:  # Clicks each pixel instead of using swipes
                     mouse.position = new_position
                     mouse.click(pynput.mouse.Button.left)
-            elif not accurate_clicks:
-                if consecutive_pixels > 0:
+            elif not accurate_clicks:  # Pixel is inactive
+                if consecutive_pixels > 0:  # Draws pending pixels
                     mouse.press(pynput.mouse.Button.left)
                     mouse.position = new_position
                     mouse.release(pynput.mouse.Button.left)
@@ -141,7 +173,7 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
 
     # root.overrideredirect(1)
     # root.wm_attributes('-transparentcolor', 'pink')
-    rwidth, rheight = 300, 255
+    rwidth, rheight = 300, 285
 
     interface_texts = config['interface_config']['texts']
     # Remember, you have to use ttk widgets
@@ -174,16 +206,74 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
 
     font_size = tk.IntVar()
     font_size_range = config['interface_config']['font_size_range']
-    font_size.set(font_size_range['min'])
 
-    font_size_slider = ttk.LabeledScale(root, from_=font_size.get(), to=font_size_range['max'], variable=font_size)
+    font_size_slider = ttk.LabeledScale(root, from_=font_size_range['min'], to=font_size_range['max'], variable=font_size)
+    font_size_slider.scale.set(font_size_range['default'])
     font_size_slider.pack()
 
-    get_padding(15).pack()
+    get_padding(10).pack()
+
+    show_fonts_button = ttk.Button(text=interface_texts['show_fonts_button'],
+                                   command=lambda: _thread.start_new_thread(show_all_fonts, ()))
+    accurate_draw_toggle = tk.IntVar()
+    if config['interface_config']['accurate_draw_is_default']:
+        accurate_draw_toggle.set(1)
+    accurate_draw_button = ttk.Checkbutton(text=interface_texts['accurate_draw_button'], variable=accurate_draw_toggle)
+
+    letter_spacing = tk.IntVar()
+    letter_spacing_range = config['interface_config']['letter_spacing_range']
+    letter_spacing_slider = ttk.LabeledScale(root, from_=letter_spacing_range['min'], to=letter_spacing_range['max'], variable=letter_spacing)
+    letter_spacing_slider.scale.set(letter_spacing_range['default'])
+    letter_spacing_text = ttk.Label(text=interface_texts['letter_spacing_info'])
+
+    more_paddings = [get_padding(10), get_padding(5)]
+
+    def toggle_more_options():
+        if more_options.get() == 1:
+            more_options_button.state(['alternate'])
+            more_options_text.set(interface_texts['less_options_button'])
+            pre_start_button_padding.pack_forget()
+            start_button.pack_forget()
+
+            root.geometry(f'{rwidth}x{rheight + 140}+{root.winfo_x()}+{root.winfo_y()}')
+            more_paddings[0].pack()
+            show_fonts_button.pack()
+            more_paddings[1].pack()
+            accurate_draw_button.pack()
+            letter_spacing_slider.pack()
+            letter_spacing_text.pack()
+            pre_start_button_padding.pack()
+            start_button.pack()
+        else:
+            more_options_text.set(interface_texts['more_options_button'])
+            show_fonts_button.pack_forget()
+            accurate_draw_button.pack_forget()
+            letter_spacing_text.pack_forget()
+            letter_spacing_slider.pack_forget()
+            pre_start_button_padding.pack_forget()
+            start_button.pack_forget()
+            for padding in more_paddings:
+                padding.pack_forget()
+
+            root.geometry(f'{rwidth}x{rheight}+{root.winfo_x()}+{root.winfo_y()}')
+            pre_start_button_padding.pack()
+            start_button.pack()
+
+    more_options = tk.IntVar()
+    more_options_text = tk.StringVar()
+    more_options_text.set(interface_texts['more_options_button'])
+    more_options_button = ttk.Checkbutton(
+        textvar=more_options_text, command=toggle_more_options, variable=more_options,
+    )
+    more_options_button.pack()
+
+    pre_start_button_padding = get_padding(10)
+    pre_start_button_padding.pack()
 
     start_button = ttk.Button(
-        root, text=interface_texts['start_button'], command=lambda: 
-        on_start_button_press(input_field.get(), dropdown_value.get(), font_size.get(), root, destroy_notifier)
+        root, text=interface_texts['start_button'], command=lambda:
+        on_start_button_press(input_field.get(), dropdown_value.get(), font_size.get(), accurate_draw_toggle.get() == 1,
+                              letter_spacing.get(), root, destroy_notifier)
     )
 
     start_button.pack()
@@ -204,18 +294,13 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
     root.mainloop()
 
 
-def on_start_button_press(input_text: str, selected_font: str, font_size: int, root: tk.Tk,
-                          destroy_notifier: list[bool] = None):
-
+def on_start_button_press(input_text: str, selected_font: str, font_size: int, accurate_draw: bool, letter_spacing: int,
+                          root: tk.Tk, destroy_notifier: list[bool] = None):
     if not input_text.strip():
         print('Input text not provided.')
         return
     else:
-        print(f'Received input: {input_text=}, {selected_font=}, {font_size=}')
-        # Not available as radio button as accuracy improvement is not worth performance loss
-        accurate_clicks = input_text.split(':')[-1] == '<accurate>'
-        if accurate_clicks:
-            input_text = input_text[:-11]
+        print(f'Received input: {input_text=}, {selected_font=}, {font_size=}, {accurate_draw=}, {letter_spacing=}')
 
         window_position = (root.winfo_x(), root.winfo_y())
         root.destroy()
@@ -224,7 +309,7 @@ def on_start_button_press(input_text: str, selected_font: str, font_size: int, r
         font = read_font(font_path, font_size)
 
         start_time = time()
-        draw_text(font, input_text, window_position, accurate_clicks=accurate_clicks)
+        draw_text(font, input_text, window_position, accurate_draw, letter_spacing)
         print(f'Drawing finished in {time() - start_time: .2f} seconds.')
 
         if destroy_notifier is not None:
