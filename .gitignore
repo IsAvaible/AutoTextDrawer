@@ -1,5 +1,5 @@
-venv
-/build/
+venv/
+build/
+build/*
 .idea
 AutoTextDrawer.spec
-/venv/
