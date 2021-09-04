@@ -2,3 +2,5 @@ res/Azure-ttk-theme/* linguist-vendored
 res/Azure-ttk-theme/theme/dark.tcl linguist-vendored
 res/Azure-ttk-theme/theme/light.tcl linguist-vendored
 res/Azure-ttk-theme/theme/azure.tcl linguist-vendored
+res/Azure-ttk-theme/README.md linguist-vendored
+res/Azure-ttk-theme/example.py linguist-vendored
