@@ -1,0 +1,4 @@
+pynput
+Pillow
+darkdetect
+numpy

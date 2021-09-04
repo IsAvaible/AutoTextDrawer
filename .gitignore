@@ -1,2 +1,5 @@
-/releases
+venv
+/build/
 .idea
+AutoTextDrawer.spec
+/venv/
