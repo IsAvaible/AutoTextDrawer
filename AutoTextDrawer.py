@@ -153,14 +153,20 @@ def draw_text(font: ImageFont.FreeTypeFont, text: str, initial_position: tuple[i
 
 
 def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = None):
+    # Initiate root window
     root = tk.Tk()
     root.title('')
 
-    # Import theme
-    root.tk.call("source", "res/Azure-ttk-theme/azure.tcl")
-    # Set the initial theme
+    # Get config
     config = get_config()
-    theme = config["interface-theme-brightness"]
+    interface_config = config['interface_config']
+
+    # Import theme
+    theme_name = interface_config['interface_theme']
+    root.tk.call("source", interface_config['interface_theme_paths'][theme_name])
+    # Set the initial theme
+
+    theme = interface_config["interface_theme_brightness"]
     if theme == 'system':
         theme = ('light', 'dark')[darkdetect.isDark()]
 
@@ -175,7 +181,7 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
     # root.wm_attributes('-transparentcolor', 'pink')
     rwidth, rheight = 300, 285
 
-    interface_texts = config['interface_config']['texts']
+    interface_texts = interface_config['texts']
     # Remember, you have to use ttk widgets
     title_label = ttk.Label(text=interface_texts['title'], font=' 15 ', justify=tk.CENTER)
     title_label.pack()
@@ -205,7 +211,7 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
     dropdown_menu.pack()
 
     font_size = tk.IntVar()
-    font_size_range = config['interface_config']['font_size_range']
+    font_size_range = interface_config['font_size_range']
 
     font_size_slider = ttk.LabeledScale(root, from_=font_size_range['min'], to=font_size_range['max'], variable=font_size)
     font_size_slider.scale.set(font_size_range['default'])
@@ -216,12 +222,12 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
     show_fonts_button = ttk.Button(text=interface_texts['show_fonts_button'],
                                    command=lambda: _thread.start_new_thread(show_all_fonts, ()))
     accurate_draw_toggle = tk.IntVar()
-    if config['interface_config']['accurate_draw_is_default']:
+    if interface_config['accurate_draw_is_default']:
         accurate_draw_toggle.set(1)
     accurate_draw_button = ttk.Checkbutton(text=interface_texts['accurate_draw_button'], variable=accurate_draw_toggle)
 
     letter_spacing = tk.IntVar()
-    letter_spacing_range = config['interface_config']['letter_spacing_range']
+    letter_spacing_range = interface_config['letter_spacing_range']
     letter_spacing_slider = ttk.LabeledScale(root, from_=letter_spacing_range['min'], to=letter_spacing_range['max'], variable=letter_spacing)
     letter_spacing_slider.scale.set(letter_spacing_range['default'])
     letter_spacing_text = ttk.Label(text=interface_texts['letter_spacing_info'])

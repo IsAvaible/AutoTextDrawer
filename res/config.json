@@ -1,5 +1,4 @@
 {
-  "interface-theme-brightness": "system",
   "hotkey": "<ctrl>+<alt>+=",
   "fonts": {
     "Default (Gloria)": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
@@ -17,6 +16,12 @@
     "__comment_2": "Handwriting like fonts do work better in general (See Gloria Hallelujah)."
   },
   "interface_config": {
+    "interface_theme_brightness": "system",
+    "interface_theme": "azure",
+    "interface_theme_paths": {
+      "azure": "res/Azure-ttk-theme/azure.tcl",
+      "sun_valley": "res/Sun-Valley-ttk-theme-master/sun-valley.tcl"
+    },
     "accurate_draw_is_default": false,
     "font_size_range": {
       "min": 20,
