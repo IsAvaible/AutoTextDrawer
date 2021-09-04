@@ -13,19 +13,19 @@ __license__ = 'BSD 3.0'
 __version__ = '1.0.0'
 __github__ = 'https://github.com/IsAvaible'
 
-import pynput  # keyboard and mouse controller / listeners
+import pynput  # keyboard and mouse controller / listeners | *
 import tkinter as tk  # user interface
-import darkdetect  # detect os dark-mode
+import darkdetect  # detect os dark-mode | *
 import json  # read and parse json files
 import _thread  # create sub-threads
 from tkinter import ttk  # use themes with tkinter
-from PIL import Image, ImageDraw, ImageFont  # read fonts and convert them to pixel information
+from PIL import Image, ImageDraw, ImageFont  # read fonts and convert them to pixel information | * (Pillow)
 from os import path  # get absolute paths
-from numpy import asarray  # transform image to pixel array
+from numpy import asarray  # transform image to pixel array | *
 from typing import Union  # type hint with multiple possible types
 from ctypes import windll  # fix dpi inconsistency between controller and listener
 from time import time  # measure draw time
-from time import sleep  # Animate interface size change
+# imports marked with * do not come shipped with python and need to be installed using the requirements.txt
 
 
 def main():
