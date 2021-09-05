@@ -6,7 +6,7 @@
 
     "Roboto": "fonts\\Roboto\\Roboto-Regular.ttf",
     "Roboto Thin": "fonts\\Roboto\\Roboto-Thin.ttf",
-    "Passion One": "fonts\\Passion_One\\\\PassionOne-Black.ttf",
+    "Passion One": "fonts\\Passion_One\\PassionOne-Black.ttf",
     "Tangerine": "fonts\\Tangerine\\Tangerine-Regular.ttf",
     "Gloria Hallelujah": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
     "Major Mono": "fonts\\Major_Mono_Display\\MajorMonoDisplay-Regular.ttf",
@@ -45,6 +45,7 @@
       "accurate_draw_tooltip": "Turning on accurate draw in unoptimized applications (e.g. Snip & Sketch) may cause performance issues.",
       "letter_spacing_info": "Letter-spacing",
       "start_button": "Start drawing \ud83c\udfa8",
+      "start_button_no_input": "\u26a0 Input text missing",
       "__comment": "To use emojis here, run: import json; print(json.dumps('<emoji>')); and paste the output."
     }
   },

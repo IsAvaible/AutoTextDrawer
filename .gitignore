@@ -1,5 +1,7 @@
 venv/
 build/
 build/*
+dist/
 .idea
 AutoTextDrawer.spec
+src/config_visualizer.py
