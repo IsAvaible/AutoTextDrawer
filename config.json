@@ -1,5 +1,6 @@
 {
   "hotkey": "<ctrl>+<alt>+=",
+  "application_kill_hotkey": "<ctrl>+<alt>+-+=",
   "fonts": {
     "Default (Gloria)": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
 

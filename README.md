@@ -17,4 +17,12 @@ Additional fonts can be added by placing a .ttf in the [/fonts](/fonts) director
 path in [config.json](config.json). Other types of configuration such as, the hotkey or interface texts can also be made using
 this config file.
 
+In case of an emergency the application can be forced killed with \<ctrl\>+\<alt\>+[=]+[-].
 
+# How to Install
+1. Currently, the application still needs Python 3.6 or higher to be installed on the host system. To install Python, visit
+   [Python's official website](https://www.python.org/downloads/) and download the latest version. Make sure to check the Path
+   option during the installation progress.
+1. Open a terminal session in the downloaded project folder ([shift] + [right-click] > Open Powershell window here) and run
+`pip -r install requirments.txt`.
+1. After finishing these initial steps the application can be run using the **AutoTextDrawer.py/pyw** file.

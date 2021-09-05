@@ -25,6 +25,8 @@ from numpy import asarray  # transform image to pixel array | *
 from typing import Union  # type hint with multiple possible types
 from ctypes import windll  # fix dpi inconsistency between controller and listener
 from time import time  # measure draw time
+
+
 # imports marked with * do not come shipped with python and need to be installed using the requirements.txt
 
 
