@@ -2,12 +2,13 @@
 
 import _thread
 import pynput  # get mouse position for interface initialization | *
+from typing import List  # type hint iterables for older Python 3.x versions
 from .interface_manager import interface
 from .config_handler import get_config
 
 
 def hotkey_listener():
-    def on_activate(is_active_notifier: list[bool]):
+    def on_activate(is_active_notifier: List[bool]):
         if not is_active_notifier[0]:
             print("Hotkey triggered.")
             is_active_notifier[0] = True

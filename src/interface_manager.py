@@ -5,12 +5,13 @@ import darkdetect  # detect os dark-mode | *
 import _thread  # create sub-threads
 from time import time, sleep  # measure draw time, show alert message on missing input text
 from tkinter import ttk  # use themes with tkinter
+from typing import List, Tuple  # type hint iterables for older Python 3.x versions
 from .config_handler import get_config
 from .font_handler import show_all_fonts, read_font
 from .draw_handler import draw_text
 
 
-def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = None):
+def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = None):
     # Initiate root window
     root = tk.Tk()
     root.title('')
@@ -19,16 +20,17 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
     config = get_config()
     interface_config = config['interface_config']
 
-    # Import theme
-    theme_name = interface_config['interface_theme']
+    # Get the theme brightness
+    theme_brightness = interface_config["interface_theme_brightness"]
+    if theme_brightness == 'system':
+        theme_brightness = ('light', 'dark')[darkdetect.isDark()]
+
+    # Import and set theme
+    theme_name = interface_config['interface_theme'][theme_brightness]
     root.tk.call("source", interface_config['interface_theme_paths'][theme_name])
 
     # Set the theme brightness
-    theme = interface_config["interface_theme_brightness"]
-    if theme == 'system':
-        theme = ('light', 'dark')[darkdetect.isDark()]
-
-    root.tk.call("set_theme", theme)
+    root.tk.call("set_theme", theme_brightness)
 
     # Set window size, disable resizable-ity and set the window to be always on top
     root_width, root_height = 300, 285
@@ -163,7 +165,7 @@ def interface(initial_position: tuple[int, int], destroy_notifier: list[bool] = 
 
 
 def on_start_button_press(input_text: str, selected_font: str, font_size: int, accurate_draw: bool, letter_spacing: int,
-                          root: tk.Tk, start_button_text_var: tk.StringVar, destroy_notifier: list[bool] = None):
+                          root: tk.Tk, start_button_text_var: tk.StringVar, destroy_notifier: List[bool] = None):
     if not input_text.strip():
         print('Input text not provided.')
         error_text = get_config()['interface_config']['texts']['start_button_no_input']

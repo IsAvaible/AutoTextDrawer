@@ -3,11 +3,12 @@
 import pynput
 from PIL import ImageFont  # type hint font
 from typing import Union  # type hint with multiple possible types
+from typing import List, Tuple  # type hint iterables for older Python 3.x versions
 from ctypes import windll  # fix dpi inconsistency between controller and listener
 from .font_handler import get_letter
 
 
-def array_to_input_motion(array: list[list[int]], initial_position: tuple[int, int], accurate_clicks: bool = False):
+def array_to_input_motion(array: List[List[int]], initial_position: Tuple[int, int], accurate_clicks: bool = False):
     mouse: pynput.mouse = pynput.mouse.Controller()
     mouse.position = initial_position
 
@@ -34,7 +35,7 @@ def array_to_input_motion(array: list[list[int]], initial_position: tuple[int, i
                 consecutive_pixels = 0
 
 
-def draw_letter(font: ImageFont.FreeTypeFont, letter: str, initial_position: tuple[int, int],
+def draw_letter(font: ImageFont.FreeTypeFont, letter: str, initial_position: Tuple[int, int],
                 accurate_clicks: bool = False) -> int:
     if letter != ' ':
         letter_as_pixel_array = get_letter(font, letter)
@@ -45,9 +46,9 @@ def draw_letter(font: ImageFont.FreeTypeFont, letter: str, initial_position: tup
     return len(letter_as_pixel_array[0])
 
 
-def draw_text(font: ImageFont.FreeTypeFont, text: str, initial_position: tuple[int, int], accurate_clicks: bool = False,
+def draw_text(font: ImageFont.FreeTypeFont, text: str, initial_position: Tuple[int, int], accurate_clicks: bool = False,
               letter_spacing: Union[int, float] = 5):
-    letter_position: list[int, int] = [*initial_position]
+    letter_position: List[int, int] = [*initial_position]
     spacing = len(get_letter(font, u'-')) // letter_spacing
     for letter in text:
         letter_position_tuple = (letter_position[0], letter_position[1])

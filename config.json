@@ -18,7 +18,11 @@
   },
   "interface_config": {
     "interface_theme_brightness": "system",
-    "interface_theme": "azure",
+    "interface_theme": {
+      "light": "azure",
+      "dark": "sun_valley",
+      "__comment": "Sets default themes for light and dark mode."
+    },
     "interface_theme_paths": {
       "azure": "themes/Azure-ttk-theme/azure.tcl",
       "sun_valley": "themes/Sun-Valley-ttk-theme-master/sun-valley.tcl"

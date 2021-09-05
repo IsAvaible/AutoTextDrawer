@@ -9,19 +9,20 @@ from .config_handler import get_config
 
 def show():
     config = get_config()
-    theme_location = (i_config := config['interface_config'])['interface_theme_paths'][i_config['interface_theme']]
+    i_config = config['interface_config']
+    theme_brightness = i_config["interface_theme_brightness"]
+    if theme_brightness == 'system':
+        theme_brightness = ('light', 'dark')[darkdetect.isDark()]
+    theme_location = i_config['interface_theme_paths'][i_config['interface_theme'][theme_brightness]]
 
     root = tk.Tk()
     root.title('')
     root.tk.call("source", theme_location)
 
-    theme_brightness = i_config["interface_theme_brightness"]
-    if theme_brightness == 'system':
-        theme_brightness = ('light', 'dark')[darkdetect.isDark()]
     root.tk.call("set_theme", theme_brightness)
 
-
     root.attributes('-topmost', True)
+
     # root_width, root_height = 300, 285
 
     def __recursive_root_build(dictionary: dict, win: tk.Tk) -> dict:
@@ -43,7 +44,7 @@ def show():
                 if not key.startswith('__'):
                     ttk.Label(text=key).pack()
                     value = str(value)
-                    entry = ttk.Entry(justify='center', width=round(len(value)*1.3))
+                    entry = ttk.Entry(justify='center', width=round(len(value) * 1.3))
                     entry.insert(0, value)
                     entry.pack()
                     entry_dict[key] = entry
