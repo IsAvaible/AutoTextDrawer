@@ -1,7 +1,7 @@
 # AutoTextDrawer
 This application automatically draws text on canvases by sending mouse events.
 
-When used with the default config using the hotkey \<ctrl\>+\<alt\>+\[=] will open the draw initiation panel.
+When used with the default config using the hotkey <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>=</kbd> will open the draw initiation panel.
 
 ![image of the draw initiation panel](https://i.imgur.com/6SXmeTv.png)
 
@@ -17,12 +17,23 @@ Additional fonts can be added by placing a .ttf in the [/fonts](/fonts) director
 path in [config.json](config.json). Other types of configuration such as, the hotkey or interface texts can also be made using
 this config file.
 
-In case of an emergency the application can be forced killed with \<ctrl\>+\<alt\>+\[=]+\[-].
+In case of an emergency the application can be forced killed with <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>=</kbd>+<kbd>-</kbd>.
 
 # How to Install
 1. Currently, the application still needs Python 3.6 or higher to be installed on the host system. To install Python, visit
    [Python's official website](https://www.python.org/downloads/) and download the latest version. Make sure to check the Path
    option during the installation progress.
-1. Open a terminal session in the downloaded project folder (\[shift] + \[right-click] > Open Powershell window here) and run
+2. Open a terminal session in the downloaded project folder (<kbd>shift</kbd> + <kbd>right-click</kbd> Open Powershell window here) and run
 `pip -r install requirments.txt`.
-1. After finishing these initial steps the application can be run using the **AutoTextDrawer.py/pyw** file.
+3. After finishing these initial steps the application can be run using the **AutoTextDrawer.py/pyw** file.
+4. Optional: If you want to autostart the application, open the startup directory with <kbd>Win</kbd> + <kbd>r</kbd>
+and put a shortcut to either of the files into the appearing directory.
+
+# Troubleshooting
+If you are using a high dpi setting on your monitor, you may experience the problem, that the draw initiation panel is
+cropped after opening it for the second time. With the current way the User Interface is being built there is no way to 
+fix this via the application source code. Instead, you need to force the High DPI scaling override in the pythonw.exe 
+compatibility setting, as explained in this [Stackoverflow Answer](https://stackoverflow.com/questions/41315873/attempting-to-resolve-blurred-tkinter-text-scaling-on-windows-10-high-dpi-disp).
+
+If you encounter any other bugs or above issue isn't fixed by the provided solution, you can report the issue in the 
+[Issues section](issues).

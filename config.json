@@ -2,22 +2,23 @@
   "hotkey": "<ctrl>+<alt>+=",
   "application_kill_hotkey": "<ctrl>+<alt>+-+=",
   "fonts": {
-    "Default (Gloria)": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
+    "Default": "Gloria",
 
     "Roboto": "fonts\\Roboto\\Roboto-Regular.ttf",
     "Roboto Thin": "fonts\\Roboto\\Roboto-Thin.ttf",
     "Passion One": "fonts\\Passion_One\\PassionOne-Black.ttf",
     "Tangerine": "fonts\\Tangerine\\Tangerine-Regular.ttf",
-    "Gloria Hallelujah": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
+    "Gloria": "fonts\\Gloria_Hallelujah\\GloriaHallelujah-Regular.ttf",
     "Major Mono": "fonts\\Major_Mono_Display\\MajorMonoDisplay-Regular.ttf",
     "Monospace": "fonts\\Roboto\\Roboto-Mono.ttf",
 
 
-    "__comment": "Default font should be one of the other fonts, as the option will disappear after opening the dropdown.",
-    "__comment_2": "Handwriting like fonts do work better in general (See Gloria Hallelujah)."
+    "__comment": "Default font has to be one of the other fonts",
+    "__comment_2": "Handwriting like fonts do work better in general (See Gloria)."
   },
   "interface_config": {
     "interface_theme_brightness": "system",
+    "__comment": "interface_theme_brightness has to be one of [system, light, dark]",
     "interface_theme": {
       "light": "azure",
       "dark": "sun_valley",
@@ -28,6 +29,8 @@
       "sun_valley": "themes/Sun-Valley-ttk-theme-master/sun-valley.tcl"
     },
     "accurate_draw_is_default": false,
+    "keep_draw_config_between_sessions": true,
+    "kill_session_on_draw_initiation": true,
     "font_size_range": {
       "min": 20,
       "max": 200,

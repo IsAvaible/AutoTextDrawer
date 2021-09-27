@@ -3,15 +3,16 @@
 import tkinter as tk  # user interface
 import darkdetect  # detect os dark-mode | *
 import _thread  # create sub-threads
+from tempfile import TemporaryFile  # Store temporary config between sessions
 from time import time, sleep  # measure draw time, show alert message on missing input text
 from tkinter import ttk  # use themes with tkinter
 from typing import List, Tuple  # type hint iterables for older Python 3.x versions
-from .config_handler import get_config
+from .config_handler import get_config, write_temp_config
 from .font_handler import show_all_fonts, read_font
 from .draw_handler import draw_text
 
 
-def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = None):
+def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = None, temp_config_override_handle: TemporaryFile = None):
     # Initiate root window
     root = tk.Tk()
     root.title('')
@@ -36,10 +37,28 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
     root_width, root_height = 300, 285
     root.resizable(0, 0)
     root.attributes('-topmost', True)
+    root.pack_propagate(0)
 
     # Remove title-bar and make background transparent
     # root.overrideredirect(1)
     # root.wm_attributes('-transparentcolor', 'pink')
+
+    # Pull config
+    fonts = config['fonts']
+    font_size_range = interface_config['font_size_range']
+    letter_spacing_range = interface_config['letter_spacing_range']
+
+    # If this is set, the application remembers the last drawing config when reopening the window
+    if temp_config_override_handle is not None and (temp_config := get_config(temp_config_override_handle)) is not None:
+        default_font_size = temp_config['font_size']
+        default_letter_spacing = temp_config['letter_spacing']
+        default_accurate_draw_state = temp_config['accurate_draw_state']
+        default_font = (temp_config['font'], False)
+    else:
+        default_font_size = font_size_range['default']
+        default_letter_spacing = letter_spacing_range['default']
+        default_accurate_draw_state = interface_config['accurate_draw_is_default']
+        default_font = (fonts['Default'], True)
 
     interface_texts = interface_config['texts']
     # Remember, you have to use ttk widgets
@@ -63,7 +82,8 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
     info_label_2.pack()
     get_padding(5).pack()
 
-    dropdown_labels = [*filter(lambda name: not name.startswith('__'), config['fonts'].keys())]
+    dropdown_labels = [*filter(lambda name: not name.startswith('__') and not name == 'Default', fonts.keys())]
+    dropdown_labels = [[default_font[0], f"Default ({default_font[0]})"][default_font[1]]] + dropdown_labels
 
     dropdown_value = tk.StringVar()
 
@@ -71,11 +91,10 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
     dropdown_menu.pack()
 
     font_size = tk.IntVar()
-    font_size_range = interface_config['font_size_range']
 
     font_size_slider = ttk.LabeledScale(root, from_=font_size_range['min'], to=font_size_range['max'],
                                         variable=font_size)
-    font_size_slider.scale.set(font_size_range['default'])
+    font_size_slider.scale.set(default_font_size)
     font_size_slider.pack()
 
     get_padding(10).pack()
@@ -83,15 +102,14 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
     show_fonts_button = ttk.Button(text=interface_texts['show_fonts_button'],
                                    command=lambda: _thread.start_new_thread(show_all_fonts, ()))
     accurate_draw_toggle = tk.IntVar()
-    if interface_config['accurate_draw_is_default']:
+    if default_accurate_draw_state:
         accurate_draw_toggle.set(1)
     accurate_draw_button = ttk.Checkbutton(text=interface_texts['accurate_draw_button'], variable=accurate_draw_toggle)
 
     letter_spacing = tk.IntVar()
-    letter_spacing_range = interface_config['letter_spacing_range']
     letter_spacing_slider = ttk.LabeledScale(root, from_=letter_spacing_range['min'], to=letter_spacing_range['max'],
                                              variable=letter_spacing)
-    letter_spacing_slider.scale.set(letter_spacing_range['default'])
+    letter_spacing_slider.scale.set(default_letter_spacing)
     letter_spacing_text = ttk.Label(text=interface_texts['letter_spacing_info'])
 
     more_paddings = [get_padding(10), get_padding(5)]
@@ -143,7 +161,7 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
     start_button = ttk.Button(
         root, textvariable=start_button_text, command=lambda: on_start_button_press(
             input_field.get(), dropdown_value.get(), font_size.get(), accurate_draw_toggle.get() == 1,
-            letter_spacing.get(), root, start_button_text, destroy_notifier)
+            letter_spacing.get(), root, start_button_text, destroy_notifier, temp_config_override_handle)
     )
 
     start_button.pack()
@@ -165,27 +183,49 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
 
 
 def on_start_button_press(input_text: str, selected_font: str, font_size: int, accurate_draw: bool, letter_spacing: int,
-                          root: tk.Tk, start_button_text_var: tk.StringVar, destroy_notifier: List[bool] = None):
+                          root: tk.Tk, start_button_text_var: tk.StringVar,
+                          destroy_notifier: List[bool] = None, temp_config_override_handle: TemporaryFile = None):
+
+    config = get_config()
     if not input_text.strip():
         print('Input text not provided.')
-        error_text = get_config()['interface_config']['texts']['start_button_no_input']
+        error_text = config['interface_config']['texts']['start_button_no_input']
         _thread.start_new_thread(on_start_button_error, (start_button_text_var, error_text))
         return
     else:
         print(f'Received input: {input_text=}, {selected_font=}, {font_size=}, {accurate_draw=}, {letter_spacing=}')
 
         window_position = (root.winfo_x(), root.winfo_y())
-        root.destroy()
 
-        font_path = get_config()['fonts'][selected_font].replace('\\', '\\')
-        font = read_font(font_path, font_size)
+        def initiate_draw(session_killed, selected_font=selected_font):
+            font_path = get_config()['fonts'][selected_font].replace('\\', '\\')
+            font = read_font(font_path, font_size)
 
-        start_time = time()
-        draw_text(font, input_text, window_position, accurate_draw, letter_spacing)
-        print(f'Drawing finished in {time() - start_time: .2f} seconds.')
+            start_time = time()
+            draw_text(font, input_text, window_position, accurate_draw, letter_spacing)
+            print(f'Drawing finished in {time() - start_time: .2f} seconds.')
 
-        if destroy_notifier is not None:
-            destroy_notifier[0] = False
+            if destroy_notifier is not None and session_killed:
+                destroy_notifier[0] = False
+            elif not session_killed:
+                # The window is moved down 300 pixels because the drawing programm might misbehave if a focused
+                # application appears on top of just written text
+                root.geometry(f'{root.winfo_width()}x{root.winfo_height()}+{window_position[0]}+'
+                              f'{[50,new_pos:=window_position[1]+300][root.winfo_screenheight()-100 > new_pos]}')
+
+        if selected_font.startswith('Default'):
+            selected_font = selected_font[selected_font.index('(') + 1:selected_font.index(')')]
+
+        if temp_config_override_handle is not None:
+            temp_config = {'font': selected_font, 'font_size': font_size, 'accurate_draw_state': accurate_draw, 'letter_spacing': letter_spacing}
+            write_temp_config(temp_config_override_handle, temp_config)
+
+        if config['interface_config']['kill_session_on_draw_initiation']:
+            root.destroy()
+            initiate_draw(True)
+        else:
+            root.geometry(f'{root.winfo_width()}x{root.winfo_height()}+{root.winfo_screenwidth()-100}+{root.winfo_screenheight()-100}')
+            _thread.start_new_thread(initiate_draw, (False,))
 
 
 def on_start_button_error(start_button_text_var: tk.StringVar, error_text: str):
