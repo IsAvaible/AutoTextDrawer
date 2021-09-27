@@ -36,4 +36,4 @@ fix this via the application source code. Instead, you need to force the High DP
 compatibility setting, as explained in this [Stackoverflow Answer](https://stackoverflow.com/questions/41315873/attempting-to-resolve-blurred-tkinter-text-scaling-on-windows-10-high-dpi-disp).
 
 If you encounter any other bugs or above issue isn't fixed by the provided solution, you can report the issue in the 
-[Issues section](issues).
+[Issues section](/../../issues).
