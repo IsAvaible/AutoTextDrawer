@@ -197,7 +197,14 @@ def on_start_button_press(input_text: str, selected_font: str, font_size: int, a
 
         window_position = (root.winfo_x(), root.winfo_y())
 
-        def initiate_draw(session_killed, selected_font=selected_font):
+        if temp_config_override_handle is not None:
+            temp_config = {'font': selected_font, 'font_size': font_size, 'accurate_draw_state': accurate_draw, 'letter_spacing': letter_spacing}
+            write_temp_config(temp_config_override_handle, temp_config)
+
+        if selected_font.startswith('Default'):
+            selected_font = selected_font[selected_font.index('(') + 1:selected_font.index(')')]
+
+        def initiate_draw(session_killed):
             font_path = get_config()['fonts'][selected_font].replace('\\', '\\')
             font = read_font(font_path, font_size)
 
@@ -212,13 +219,6 @@ def on_start_button_press(input_text: str, selected_font: str, font_size: int, a
                 # application appears on top of just written text
                 root.geometry(f'{root.winfo_width()}x{root.winfo_height()}+{window_position[0]}+'
                               f'{[50,new_pos:=window_position[1]+300][root.winfo_screenheight()-100 > new_pos]}')
-
-        if selected_font.startswith('Default'):
-            selected_font = selected_font[selected_font.index('(') + 1:selected_font.index(')')]
-
-        if temp_config_override_handle is not None:
-            temp_config = {'font': selected_font, 'font_size': font_size, 'accurate_draw_state': accurate_draw, 'letter_spacing': letter_spacing}
-            write_temp_config(temp_config_override_handle, temp_config)
 
         if config['interface_config']['kill_session_on_draw_initiation']:
             root.destroy()
