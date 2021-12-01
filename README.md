@@ -20,13 +20,20 @@ this config file.
 In case of an emergency the application can be forced killed with <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>=</kbd>+<kbd>-</kbd>.
 
 # How to Install
-1. Currently, the application still needs Python 3.9 or higher to be installed on the host system. To install Python, visit
+**Windows via executable**
+1. Download a release from the [releases section](https://github.com/IsAvaible/AutoTextDrawer/releases).
+2. Unzip the folder.
+3. Run the application by using the `AutoTextDrawer.exe`.
+
+**Linux / Windows via local Python install**
+1. Download the Source Code from the [releases section](https://github.com/IsAvaible/AutoTextDrawer/releases) and unzip it.
+2. The application needs Python 3.9 or higher to be installed on the host system. To install Python, visit
    [Python's official website](https://www.python.org/downloads/) and download the latest version. Make sure to check the Path
    option during the installation progress.
-2. Open a terminal session in the downloaded project folder (<kbd>shift</kbd> + <kbd>right-click</kbd> Open Powershell window here) and run
+3. Open a terminal session in the downloaded project folder (<kbd>shift</kbd> + <kbd>right-click</kbd> Open Powershell window here) and run
 `pip -r install requirments.txt`.
-3. After finishing these initial steps the application can be run using the **AutoTextDrawer.py/pyw** file.
-4. Optional: If you want to autostart the application, open the startup directory with <kbd>Win</kbd> + <kbd>r</kbd>
+4. After finishing these initial steps the application can be run using the **AutoTextDrawer.py/pyw** file.
+5. Optional: If you want to autostart the application, open the startup directory with <kbd>Win</kbd> + <kbd>r</kbd>
 and put a shortcut to either of the files into the appearing directory.
 
 # Troubleshooting
