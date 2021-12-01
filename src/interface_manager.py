@@ -54,6 +54,8 @@ def interface(initial_position: Tuple[int, int], destroy_notifier: List[bool] = 
         default_letter_spacing = temp_config['letter_spacing']
         default_accurate_draw_state = temp_config['accurate_draw_state']
         default_font = (temp_config['font'], False)
+        if interface_config['+ restore_window_position']:
+            initial_position = temp_config['window_position']
     else:
         default_font_size = font_size_range['default']
         default_letter_spacing = letter_spacing_range['default']
@@ -198,7 +200,8 @@ def on_start_button_press(input_text: str, selected_font: str, font_size: int, a
         window_position = (root.winfo_x(), root.winfo_y())
 
         if temp_config_override_handle is not None:
-            temp_config = {'font': selected_font, 'font_size': font_size, 'accurate_draw_state': accurate_draw, 'letter_spacing': letter_spacing}
+            temp_config = {'font': selected_font, 'font_size': font_size, 'accurate_draw_state': accurate_draw,
+                           'letter_spacing': letter_spacing, 'window_position': window_position}
             write_temp_config(temp_config_override_handle, temp_config)
 
         if selected_font.startswith('Default'):

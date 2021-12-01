@@ -30,6 +30,7 @@
     },
     "accurate_draw_is_default": false,
     "keep_draw_config_between_sessions": true,
+    "+ restore_window_position": false,
     "kill_session_on_draw_initiation": true,
     "font_size_range": {
       "min": 20,
@@ -39,7 +40,8 @@
     "letter_spacing_range": {
       "min": 20,
       "max": 1,
-      "default": 10
+      "default": 10,
+      "__comment": "Must be integers; Lower values = higher letter spacing"
     },
     "texts": {
       "title": "Text Auto Draw",
@@ -53,7 +55,7 @@
       "letter_spacing_info": "Letter-spacing",
       "start_button": "Start drawing \ud83c\udfa8",
       "start_button_no_input": "\u26a0 Input text missing",
-      "__comment": "To use emojis here, run: import json; print(json.dumps('<emoji>')); and paste the output."
+      "__comment": "To use emojis here, run: >>import json; print(json.dumps('<emoji>'));<< and paste the output."
     }
   },
   "show_font(s)_config": {

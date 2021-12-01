@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import _thread
+import _thread  # create sub-threads
 import pynput  # get mouse position for interface initialization | *
 from typing import List  # type hint iterables for older Python 3.x versions
-from tempfile import TemporaryFile
+from tempfile import TemporaryFile  # Store temporary config between sessions
 from .interface_manager import interface
 from .config_handler import get_config
 
@@ -26,6 +26,7 @@ def hotkey_listener():
 
     config = get_config()
     temp_config_override_handle = None
+
     if config['interface_config']['keep_draw_config_between_sessions']:
         temp_config_override_handle = TemporaryFile()
     with pynput.keyboard.GlobalHotKeys({

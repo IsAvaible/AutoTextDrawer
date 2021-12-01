@@ -49,7 +49,8 @@ def draw_letter(font: ImageFont.FreeTypeFont, letter: str, initial_position: Tup
 def draw_text(font: ImageFont.FreeTypeFont, text: str, initial_position: Tuple[int, int], accurate_clicks: bool = False,
               letter_spacing: Union[int, float] = 5):
     letter_position: List[int, int] = [*initial_position]
-    spacing = len(get_letter(font, u'-')) // letter_spacing
+    spacing = len(get_letter(font, '0')) // letter_spacing
+
     for letter in text:
         letter_position_tuple = (letter_position[0], letter_position[1])
         letter_width = draw_letter(font, letter, letter_position_tuple, accurate_clicks)
