@@ -20,7 +20,7 @@ this config file.
 In case of an emergency the application can be forced killed with <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>=</kbd>+<kbd>-</kbd>.
 
 # How to Install
-1. Currently, the application still needs Python 3.6 or higher to be installed on the host system. To install Python, visit
+1. Currently, the application still needs Python 3.9 or higher to be installed on the host system. To install Python, visit
    [Python's official website](https://www.python.org/downloads/) and download the latest version. Make sure to check the Path
    option during the installation progress.
 2. Open a terminal session in the downloaded project folder (<kbd>shift</kbd> + <kbd>right-click</kbd> Open Powershell window here) and run
