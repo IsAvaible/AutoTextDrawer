@@ -9,6 +9,7 @@ After setting up the available configurations the draw can be initiated by press
 
 ![image of a example text on paint](https://i.imgur.com/MKBkep3.png)
 
+
 The application ships with several open-source licensed fonts 
 and uses [a ttk theme](https://github.com/rdbende/Azure-ttk-theme) made by [rdbende](https://github.com/rdbende) 
 (The [Sun Valley theme](https://github.com/rdbende/Sun-Valley-ttk-theme) is also available and can be selected in the config.).
@@ -44,3 +45,6 @@ compatibility setting, as explained in this [Stackoverflow Answer](https://stack
 
 If you encounter any other bugs or above issue isn't fixed by the provided solution, you can report the issue in the 
 [Issues section](/../../issues).
+
+# Short Video Demo
+![Demo](https://user-images.githubusercontent.com/76125864/167943086-efd5d959-e302-4c33-9c9f-547409e391ee.gif)
